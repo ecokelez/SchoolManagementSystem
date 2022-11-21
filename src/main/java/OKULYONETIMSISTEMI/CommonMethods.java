@@ -1,9 +1,8 @@
 package OKULYONETIMSISTEMI;
 
-import java.util.Map;
 import java.util.Scanner;
 
-public class CommonMethods {
+public class CommonMethods extends Menu {
     static Scanner input = new Scanner(System.in);
 
     public static void add(String type) {
@@ -47,16 +46,16 @@ public class CommonMethods {
         } else if (type.equals("TEACHER")) {
             TeacherMethods.listAllTeachers(type);
         } else {
-            System.out.println("An error occured! The application is restarting.");
+            System.out.println("An error occurred! The application is restarting.");
             Menu.mainMenu();
         }
-
-        Menu.returnToMenu("ADD", type);
+        returnToMenu(type);
     }
 
     public static void search(String type) {
         String typeLowercase = type.toLowerCase();
         System.out.println("---------------------------# SEARCH " + type + " PAGE #---------------------------");
+        System.out.println();
         System.out.println("Please enter the ID number of the " + typeLowercase + " that you want to search:");
         int userInput = input.nextInt();
 
@@ -85,11 +84,62 @@ public class CommonMethods {
 
     }
 
-    public static void ShowTableHead(String type, String title) {
-        System.out.println("---------------------------# " + type + " " + title + " #--------------------------------------------------------");
-        System.out.println("ID           Name                 Last Name              Age                Student Number          Grade" +
-                "\n-----------------------------------------------------------------------------------------------------------------");
+    public static void remove(String type) {
+        String typeLowercase = type.toLowerCase();
+        System.out.println("---------------------------# REMOVE " + type + " PAGE #---------------------------");
+        System.out.println();
+        System.out.println("Please enter the ID number of the " + typeLowercase + " that you want to remove:");
+        int userInput = input.nextInt();
+
+        if (Pojo.teachersList.isEmpty() && Pojo.studentsList.isEmpty()) {
+            System.out.println("List is already empty.");
+            Menu.returnToMenu("REMOVE", typeLowercase);
+        } else {
+            if (type.equals("STUDENT")) {
+                Pojo.studentsList.remove(userInput);
+            } else if (type.equals("TEACHER")) {
+                Pojo.teachersList.remove(userInput);
+            }
+        }
+
+        System.out.println("The " + type.toLowerCase() + " has been removed successfully.");
+        Menu.returnToMenu("REMOVE", type);
     }
 
+    public static void ShowTableHead(String type, String title) {
+        if (type.equals("STUDENT")) {
+            System.out.println("---------------------------# " + type + " " + title + " #--------------------------------------------------------");
+            System.out.println("ID           Name                 Last Name              Age                Student Number          Grade" +
+                    "\n-----------------------------------------------------------------------------------------------------------------");
+        } else if (type.equals("TEACHER")) {
+            System.out.println("---------------------------# " + type + " " + title + " #--------------------------------------------------------");
+            System.out.println("ID           Name                 Last Name              Age                Reg Number          Field" +
+                    "\n-----------------------------------------------------------------------------------------------------------------");
+        }
+    }
+
+    public static void returnToMenu (String type) {//Burada methodu override etmek zorunda kaldim. Ama statik oldugu icin tekrar kendim yazdim...
+        do {
+            System.out.println("1- RETURN TO " + type.toUpperCase() + " SUB MENU\n" +
+                    "2- RETURN TO MAIN MENU\n" +
+                    "Q- QUIT");
+
+            String userInput = input.next().toUpperCase();
+            if (userInput.equals("1")) {
+                Menu.subMenu(type);
+                break;
+            } else if (userInput.equals("2")) {
+                Menu.mainMenu();
+                break;
+            } else if (userInput.equals("Q")) {
+                quit();
+                break;
+            } else {
+                System.out.println("Invalid user input. Please try again... ");
+            }
+        } while (true);
+
+
+    }
 
 }

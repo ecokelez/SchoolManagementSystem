@@ -58,6 +58,7 @@ public class Menu {
                 CommonMethods.list(type);
                 break;
             } else if (userInput.equals("4")) {
+                CommonMethods.remove(type);
                 break;
             } else if (userInput.equals("5")) {
                 Menu.mainMenu();
@@ -74,14 +75,27 @@ public class Menu {
 
     public static void returnToMenu(String methodName, String type) {
         do {
-            System.out.println("1- " + methodName+ " MORE " + type + "\n" +
-                    "2- RETURN TO " + type + " SUB MENU\n" +
+            System.out.println("1- " + methodName+ " MORE " + type.toUpperCase() + "\n" +
+                    "2- RETURN TO " + type.toUpperCase() + " SUB MENU\n" +
                     "3- RETURN TO MAIN MENU\n" +
                     "Q- QUIT");
 
             String userInput = input.next().toUpperCase();
             if (userInput.equals("1")) {
-                CommonMethods.add(type);
+                switch (methodName) {
+                    case "ADD":
+                        CommonMethods.add(type);
+                        break;
+                    case "LIST":
+                        CommonMethods.list(type);
+                        break;
+                    case "SEARCH":
+                        CommonMethods.search(type);
+                        break;
+                    case "REMOVE":
+                        CommonMethods.remove(type);
+                        break;
+                }
                 break;
             } else if (userInput.equals("2")) {
                 Menu.subMenu(type);
